@@ -1,8 +1,8 @@
 class Vertex
   attr_accessor :next_vertex, :value
 
-  def initialize(x, y)
+  def initialize(value)
     @next_vertex = nil
-    @value = [x, y]
+    @value = value
   end
 end
