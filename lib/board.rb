@@ -8,7 +8,7 @@ class Board
     @vertex_y = nil
     @current_position = []
     # @graph = []
-    @graph = Array.new(4) { Array.new(4, 0) }
+    @graph = Array.new(8) { Array.new(8) }
 
   end
 
