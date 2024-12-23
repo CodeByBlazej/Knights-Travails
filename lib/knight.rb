@@ -2,7 +2,7 @@ require_relative "board"
 
 class Knight
   def initialize
-    @allowed_move = [1, 2] || [2, 1]
+    @allowed_moves = nil
     @board = nil
   end
 
@@ -24,7 +24,7 @@ class Knight
     end
     p @board.current_position
     p @board.graph
-    # possible_moves(to)
+    possible_moves(to)
 
     # @board.add_vertices(from[0], from[1])
 
@@ -48,16 +48,18 @@ class Knight
   def possible_moves(to)
     return if @board.current_position == to
       
-    temporary_position = []
-
-    if @board.current_position[0] < to[0]
-      temporary_position << @board.current_position[0] + @allowed_move[0]
-      temporary_position << @board.current_position[1] + @allowed_move[1]
+    if @allowed_moves.nil?
+      moves = [-2, -1, 1, 2]
+      @allowed_moves = moves.permutation(2).select { |a, b| a + b != 0 }
     end
-    p temporary_position
-    @board.graph[0][0] = 1
-    p @board.current_position
-    p @board.graph
+
+    p @allowed_moves
+
+
+    # p temporary_position
+    # @board.graph[0][0] = 1
+    # p @board.current_position
+    # p @board.graph
   end
 
 end
