@@ -1,7 +1,7 @@
 require_relative "node"
 
 class Tree
-  attr_accessor :arr, root
+  attr_accessor :arr, :root
 
   def initialize(arr)
     @arr = arr
