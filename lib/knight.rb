@@ -18,12 +18,12 @@ class Knight
       @board.graph[from[0]][from[1]] = 1
     end
 
-    if @board.graph[to[0]][to[1]].nil?
-      # possible_moves(to)?????????
-    else
-      puts "field you want to go to is taken by other chess piece"
-    end
-    p @board.current_position
+    # if @board.graph[to[0]][to[1]].nil?
+    #   # possible_moves(to)?????????
+    # else
+    #   puts "field you want to go to is taken by other chess piece"
+    # end
+    # p @board.current_position
     p @board.graph
     possible_moves(from, to)
 
@@ -47,19 +47,31 @@ class Knight
   end
 
   def possible_moves(from, to)
+    
+    result = [from]
     return if @board.current_position == to
       
-    if @allowed_moves.nil?
+    # if @allowed_moves.nil?
       moves = [-2, -1, 1, 2]
       @allowed_moves = moves.permutation(2).select { |a, b| a + b != 0 }
       @allowed_moves = @allowed_moves.map { |a, b| [a + from[0], b + from[1]]}
-    end
+    # end
 
     arr_for_tree = @allowed_moves << @board.current_position
     tree = Tree.new(arr_for_tree)
     tree.build_tree
     tree.pretty_print
     p @allowed_moves.sort
+
+    #now i have to check if tree contains TO. if it doesn't then move to
+    #the point of the tree that is closest to TO. check if it doesn't stick
+    #out of the graph
+    
+    
+    if tree.find(to) == to
+      puts "yeeeaa!"
+      
+    end
 
 
     # p temporary_position
