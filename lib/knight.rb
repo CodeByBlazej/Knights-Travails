@@ -1,4 +1,5 @@
 require_relative "board"
+require_relative "tree"
 
 class Knight
   def initialize
@@ -24,7 +25,7 @@ class Knight
     end
     p @board.current_position
     p @board.graph
-    possible_moves(to)
+    possible_moves(from, to)
 
     # @board.add_vertices(from[0], from[1])
 
@@ -45,15 +46,20 @@ class Knight
     # p @board.current_position
   end
 
-  def possible_moves(to)
+  def possible_moves(from, to)
     return if @board.current_position == to
       
     if @allowed_moves.nil?
       moves = [-2, -1, 1, 2]
       @allowed_moves = moves.permutation(2).select { |a, b| a + b != 0 }
+      @allowed_moves = @allowed_moves.map { |a, b| [a + from[0], b + from[1]]}
     end
 
-    p @allowed_moves
+    arr_for_tree = @allowed_moves << @board.current_position
+    tree = Tree.new(arr_for_tree)
+    tree.build_tree
+    tree.pretty_print
+    p @allowed_moves.sort
 
 
     # p temporary_position
