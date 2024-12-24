@@ -15,6 +15,10 @@ class Tree
     @root = new_node.sorted_array_to_BST(sorted_arr)
   end
 
+  def find(data)
+    @root.find_node(@root, data)
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"

@@ -25,5 +25,15 @@ class Node
     return sorted_arr_to_BST_recur(arr, 0, arr.size - 1)
   end
 
-  
+  def find_node(root, x)
+    return if root.nil?
+
+    return root.data if root.data == x
+
+    left_result = find_node(root.left, x)
+    return left_result if left_result
+
+    find_node(root.right, x)
+  end
+
 end
