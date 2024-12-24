@@ -13,7 +13,7 @@ class Game
   # puts board.graph[0].value
   # puts board.graph[1].value
   def play
-    @knight.knight_moves([0, 0], [1, 2])
+    @knight.knight_moves([3, 3], [1, 2])
     
   end
 
