@@ -70,9 +70,11 @@ class Knight
     
     if tree.find(to) == to
       puts "yeeeaa!"
-      
+      @board.current_position = to
+      result << @board.current_position
     end
-
+    p result
+    remove_unpossible_moves(tree)
 
     # p temporary_position
     # @board.graph[0][0] = 1
@@ -80,4 +82,8 @@ class Knight
     # p @board.graph
   end
 
+  def remove_unpossible_moves(tree)
+    
+    tree.pretty_print
+  end
 end
