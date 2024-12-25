@@ -36,4 +36,18 @@ class Node
     find_node(root.right, x)
   end
 
+  def level_order(root)
+    queue = [root]
+    result = []
+
+    until queue.empty?
+      result << queue.first.data
+      queue << queue.first.left if queue.first.left != nil
+      queue << queue.first.right if queue.first.right != nil
+      queue.shift
+    end
+
+    return result
+  end
+
 end
