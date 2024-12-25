@@ -11,83 +11,59 @@ class Knight
     if @board.nil?
       @board = Board.new
     end
-    #if current position is empty then make new currnt pos regarding whats given
-    #and count every possible move from there and change current possition
+    
     if @board.current_position.empty?
       @board.current_position = [from[0], from[1]]
       @board.graph[from[0]][from[1]] = 1
     end
 
-    # if @board.graph[to[0]][to[1]].nil?
-    #   # possible_moves(to)?????????
-    # else
-    #   puts "field you want to go to is taken by other chess piece"
-    # end
-    # p @board.current_position
+
     p @board.graph
     possible_moves(from, to)
 
-    # @board.add_vertices(from[0], from[1])
-
-    # p @board.current_position
-
-    # # until @board.graph.include(to)
-      
-    # # end
-    
-    # if @board.graph.include?(to)
-    #   puts @board.graph
-    # else
-    #   @board.add_vertices(@allowed_move[0], @allowed_move[1])
-    # end
-    
-    # p @board.graph
-    # p to
-    # p @board.current_position
   end
 
   def possible_moves(from, to)
     
     result = [from]
-    return if @board.current_position == to
+    return result if @board.current_position == to
       
     # if @allowed_moves.nil?
       moves = [-2, -1, 1, 2]
       @allowed_moves = moves.permutation(2).select { |a, b| a + b != 0 }
       potential_moves = @allowed_moves.map { |a, b| [a + from[0], b + from[1]]}
-      filtered_moves = potential_moves.select { |a, b| a >= 0 && a <= 7 && b >= 0 && b <= 7}
+      filtered_moves = potential_moves.select { |a, b| a >= 0 && a <= 7 && b >= 0 && b <= 7} - @board.current_position
       p @allowed_moves
       p potential_moves
       p filtered_moves
       # end
 
-    arr_for_tree = @allowed_moves << @board.current_position
-    tree = Tree.new(arr_for_tree)
+    arr_for_tree = filtered_moves
+    p filtered_moves
+    tree = Tree.new(arr_for_tree.dup << @board.current_position)
     tree.build_tree
     tree.pretty_print
+    p filtered_moves
+
     p @allowed_moves.sort
 
-    #now i have to check if tree contains TO. if it doesn't then move to
-    #the point of the tree that is closest to TO. check if it doesn't stick
-    #out of the graph
     
     
     if tree.find(to) == to
       puts "yeeeaa!"
       @board.current_position = to
       result << @board.current_position
+    elsif tree.find(to) != to
+      p filtered_moves
+      closest_move = filtered_moves.min_by { |move| (to[0] - move[0]) + (to[1] - move[1]) }
     end
-    p result
+    p closest_move
+    
     remove_unpossible_moves(tree)
-
-    # p temporary_position
-    # @board.graph[0][0] = 1
-    # p @board.current_position
-    # p @board.graph
   end
 
   def remove_unpossible_moves(tree)
 
-    tree.pretty_print
+    # tree.pretty_print
   end
 end
