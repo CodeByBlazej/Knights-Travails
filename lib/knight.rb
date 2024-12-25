@@ -54,8 +54,12 @@ class Knight
     # if @allowed_moves.nil?
       moves = [-2, -1, 1, 2]
       @allowed_moves = moves.permutation(2).select { |a, b| a + b != 0 }
-      @allowed_moves = @allowed_moves.map { |a, b| [a + from[0], b + from[1]]}
-    # end
+      potential_moves = @allowed_moves.map { |a, b| [a + from[0], b + from[1]]}
+      filtered_moves = potential_moves.select { |a, b| a >= 0 && a <= 7 && b >= 0 && b <= 7}
+      p @allowed_moves
+      p potential_moves
+      p filtered_moves
+      # end
 
     arr_for_tree = @allowed_moves << @board.current_position
     tree = Tree.new(arr_for_tree)
@@ -83,7 +87,7 @@ class Knight
   end
 
   def remove_unpossible_moves(tree)
-    
+
     tree.pretty_print
   end
 end
