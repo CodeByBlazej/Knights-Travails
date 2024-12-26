@@ -11,6 +11,43 @@ class Knight
     @tree = nil
   end
 
+  # def knight_moves(from, to)
+  #   queue = [from]
+  #   visited = { from => nil }
+
+  #   until queue.empty?
+  #     current = queue.shift
+
+  #     return build_path(visited, to) if current == to
+
+  #     valid_moves(from, current).each do |move|
+  #       next if visited.key?(move)
+  #       visited[move] = current
+  #       queue << move
+  #     end
+  #   end
+  # end
+
+  # def build_path(visited, to)
+  #   path = []
+  #   current = to
+
+  #   while current
+  #     path.unshift(current)
+  #     current = visited[current]
+  #   end
+  #   path
+  # end
+
+  # def valid_moves(from, current)
+  #   moves = [-2, -1, 1, 2]
+  #   @allowed_moves = moves.permutation(2).select { |a, b| a + b != 0 }
+  #   potential_moves = @allowed_moves.map { |a, b| [a + from[0], b + from[1]]}
+  #   @filtered_moves = potential_moves.select { |a, b| a >= 0 && a <= 7 && b >= 0 && b <= 7}  
+
+  #   return @filtered_moves << current
+  # end
+
   def knight_moves(from, to)
     if @board.nil?
       @board = Board.new
