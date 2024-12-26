@@ -4,7 +4,9 @@ require_relative "tree"
 class Knight
   def initialize
     @allowed_moves = nil
+    @filtered_moves = nil
     @board = nil
+    @tree = nil
   end
 
   def knight_moves(from, to)
@@ -23,47 +25,60 @@ class Knight
 
   end
 
-  def possible_moves(from, to)
+  def possible_moves(from, to, result = [from])
     
-    result = [from]
+    # result = [from]
     return result if @board.current_position == to
-      
-    # if @allowed_moves.nil?
-      moves = [-2, -1, 1, 2]
-      @allowed_moves = moves.permutation(2).select { |a, b| a + b != 0 }
-      potential_moves = @allowed_moves.map { |a, b| [a + from[0], b + from[1]]}
-      filtered_moves = potential_moves.select { |a, b| a >= 0 && a <= 7 && b >= 0 && b <= 7} - @board.current_position
-      p @allowed_moves
-      p potential_moves
-      p filtered_moves
-      # end
+      make_tree(from)
 
-    arr_for_tree = filtered_moves
-    p filtered_moves
-    tree = Tree.new(arr_for_tree.dup << @board.current_position)
-    tree.build_tree
-    tree.pretty_print
-    p filtered_moves
+    #   moves = [-2, -1, 1, 2]
+    #   @allowed_moves = moves.permutation(2).select { |a, b| a + b != 0 }
+    #   potential_moves = @allowed_moves.map { |a, b| [a + from[0], b + from[1]]}
+    #   filtered_moves = potential_moves.select { |a, b| a >= 0 && a <= 7 && b >= 0 && b <= 7} - @board.current_position
+    #   p @allowed_moves
+    #   p potential_moves
+    #   p filtered_moves
+
+
+    # arr_for_tree = filtered_moves
+    # p filtered_moves
+    # tree = Tree.new(arr_for_tree.dup << @board.current_position)
+    # tree.build_tree
+    # tree.pretty_print
+    # p filtered_moves
 
     p @allowed_moves.sort
 
     
     
-    if tree.find(to) == to
+    if @tree.find(to) == to
       puts "yeeeaa!"
       @board.current_position = to
       result << @board.current_position
-    elsif tree.find(to) != to
-      p filtered_moves
-      closest_move = filtered_moves.min_by { |move| (to[0] - move[0]) + (to[1] - move[1]) }
+      return result
+    elsif @tree.find(to) != to
+      closest_move = @filtered_moves.min_by { |move| (to[0] - move[0]) + (to[1] - move[1]) }
+      @board.current_position = closest_move
+      result << @board.current_position
     end
-    p closest_move
     
-    remove_unpossible_moves(tree)
   end
 
-  def remove_unpossible_moves(tree)
+  def make_tree(from)
+    moves = [-2, -1, 1, 2]
+    @allowed_moves = moves.permutation(2).select { |a, b| a + b != 0 }
+    potential_moves = @allowed_moves.map { |a, b| [a + from[0], b + from[1]]}
+    @filtered_moves = potential_moves.select { |a, b| a >= 0 && a <= 7 && b >= 0 && b <= 7} - @board.current_position
+    p @allowed_moves
+    p potential_moves
+    p @filtered_moves
+    
 
-    # tree.pretty_print
+    arr_for_tree = @filtered_moves
+    p @filtered_moves
+    @tree = Tree.new(arr_for_tree.dup << @board.current_position)
+    @tree.build_tree
+    @tree.pretty_print
+    p @filtered_moves
   end
 end
