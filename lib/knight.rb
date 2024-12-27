@@ -11,44 +11,71 @@ class Knight
     @tree = nil
   end
 
-  # def knight_moves(from, to)
-  #   queue = [from]
-  #   visited = { from => nil }
-
-  #   until queue.empty?
-  #     current = queue.shift
-
-  #     return build_path(visited, to) if current == to
-
-  #     valid_moves(from, current).each do |move|
-  #       next if visited.key?(move)
-  #       visited[move] = current
-  #       queue << move
-  #     end
-  #   end
-  # end
-
-  # def build_path(visited, to)
-  #   path = []
-  #   current = to
-
-  #   while current
-  #     path.unshift(current)
-  #     current = visited[current]
-  #   end
-  #   path
-  # end
-
-  # def valid_moves(from, current)
-  #   moves = [-2, -1, 1, 2]
-  #   @allowed_moves = moves.permutation(2).select { |a, b| a + b != 0 }
-  #   potential_moves = @allowed_moves.map { |a, b| [a + from[0], b + from[1]]}
-  #   @filtered_moves = potential_moves.select { |a, b| a >= 0 && a <= 7 && b >= 0 && b <= 7}  
-
-  #   return @filtered_moves << current
-  # end
-
   def knight_moves(from, to)
+    first_node = Board.new(from, nil)
+
+    queue = [first_node]
+    visited = [from]
+
+    until queue.empty?
+      current = queue.shift
+      return build_path(current) if current.current_position == to
+
+      children = current.available_moves
+      # binding.pry
+      children.each do |child|
+        unless visited.include?(child.current_position)
+          visited << child.current_position
+          queue << child
+        end
+      end
+    end
+
+    # queue = []
+    # current_node = Board.new(from, nil)
+    
+    # until current_node.current_position == to
+    #   current_node.available_moves(current_node.current_position).each { |child| queue << child }
+      
+    #   current_node = queue.shift 
+    # end
+    
+    # display_parent(current_node)
+    
+  end
+
+  def display_parent(node)
+    display_parent(node.parent) unless node.parent.nil?
+    p node.current_position
+  end
+
+  def build_path(to)
+    path = []
+    current = to
+
+    while current
+      path << current.current_position
+      current = current.parent
+    end
+    path.reverse
+  end
+
+  def valid_moves(from, current)
+    moves = [-2, -1, 1, 2]
+    @allowed_moves = moves.permutation(2).select { |a, b| a + b != 0 }
+    potential_moves = @allowed_moves.map { |a, b| [a + from[0], b + from[1]]}
+    @filtered_moves = potential_moves.select { |a, b| a >= 0 && a <= 7 && b >= 0 && b <= 7}  
+    
+    arr_for_tree = @filtered_moves
+    
+    @tree = Tree.new(arr_for_tree.dup << current)
+    @tree.build_tree
+    @tree.pretty_print
+
+    return @filtered_moves
+  end
+
+  def kknight_moves(from, to)
     if @board.nil?
       @board = Board.new
     end
