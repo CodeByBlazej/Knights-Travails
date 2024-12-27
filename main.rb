@@ -1,4 +1,4 @@
 require_relative "game"
 
 game = Game.new
-puts game.play
+p game.play
