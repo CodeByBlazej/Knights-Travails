@@ -1,4 +1,4 @@
-require_relative "board"
+require_relative "node"
 require "pry-byebug"
 
 class Knight
@@ -6,7 +6,7 @@ class Knight
   end
 
   def knight_moves(from, to)
-    first_node = Board.new(from, nil)
+    first_node = Node.new(from, nil)
 
     queue = [first_node]
     visited = [from]
