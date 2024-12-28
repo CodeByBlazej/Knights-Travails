@@ -1,53 +1,17 @@
+
 class Node
-  attr_accessor :data, :left, :right
+  attr_accessor :current_position, :parent, :filtered_moves
 
-  def initialize(data)
-    @data = data
-    @left = left
-    @right = right
+  def initialize(current_position, parent)
+    @current_position = current_position
+    @parent = parent
+    @filtered_moves = nil
   end
 
-  def sorted_arr_to_BST_recur(arr, first, last)
-    return nil if first > last
-
-    mid = first + (last - first) / 2
-
-    root = Node.new(arr[mid])
-
-    root.left = sorted_arr_to_BST_recur(arr, first, mid - 1)
-
-    root.right = sorted_arr_to_BST_recur(arr, mid + 1, last)
-
-    return root
+  def available_moves
+    moves = [-2, -1, 1, 2].shuffle
+    allowed_moves = moves.permutation(2).select { |a, b| a + b != 0 }
+    potential_moves = allowed_moves.map { |a, b| [a + @current_position[0], b + @current_position[1]]}
+    @filtered_moves = potential_moves.select { |a, b| a >= 0 && a <= 7 && b >= 0 && b <= 7}.map { |move| Node.new(move, self) }
   end
-
-  def sorted_array_to_BST(arr)
-    return sorted_arr_to_BST_recur(arr, 0, arr.size - 1)
-  end
-
-  def find_node(root, x)
-    return if root.nil?
-
-    return root.data if root.data == x
-
-    left_result = find_node(root.left, x)
-    return left_result if left_result
-
-    find_node(root.right, x)
-  end
-
-  def level_order(root)
-    queue = [root]
-    result = []
-
-    until queue.empty?
-      result << queue.first.data
-      queue << queue.first.left if queue.first.left != nil
-      queue << queue.first.right if queue.first.right != nil
-      queue.shift
-    end
-
-    return result
-  end
-
 end
