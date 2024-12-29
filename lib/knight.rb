@@ -1,10 +1,9 @@
 require_relative "node"
 require "pry-byebug"
 
+# Knight class creates knight object and knight moves
+# method that is responsible for nodes manipulation
 class Knight
-  def initialize
-  end
-
   def knight_moves(from, to)
     first_node = Node.new(from, nil)
 
@@ -16,7 +15,7 @@ class Knight
       return build_path(current) if current.current_position == to
 
       children = current.available_moves
-      # binding.pry
+
       children.each do |child|
         unless visited.include?(child.current_position)
           visited << child.current_position

@@ -1,10 +1,10 @@
 require_relative "lib/node"
 require_relative "lib/knight"
 
+# Game class is responsible for creating knight object
 class Game
-
   def initialize
-    @knight = Knight.new()
+    @knight = Knight.new
   end
 
   def play
